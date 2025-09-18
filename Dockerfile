@@ -1,7 +1,7 @@
 FROM rust:alpine
 # mount secret.rs into /art-of-rally-leaderboard-utils/src/secret.rs
 
-RUN apk add git caddy musl-dev
+RUN apk add git caddy musl-dev supercronic --no-cache
 
 # leaderboard
 WORKDIR /
@@ -12,5 +12,10 @@ RUN cargo fetch
 # so pulling doesn't override secrets.rs
 RUN git update-index --assume-unchanged src/secret.rs
 
+# cronjob
+RUN echo "0 * * * * cd /art-of-rally-leaderboard-utils && git pull && cargo run --release >> /var/log/cron.log 2>&1" >> /cronjob
+RUN touch /var/log/cron.log
+
+
 # caddy
-ENTRYPOINT git pull && cargo run --release && caddy file-server --listen :2015 --root /art-of-rally-leaderboard-utils/public
+ENTRYPOINT supercronic /cronjob & git pull && cargo run --release && caddy file-server --listen :2015 --root /art-of-rally-leaderboard-utils/public
