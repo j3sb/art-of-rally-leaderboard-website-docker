@@ -1,5 +1,5 @@
 FROM rust:alpine
-# mount secret.rs into /art-of-rally-leaderboard-utils/src/
+# mount secret.rs into /art-of-rally-leaderboard-utils/src/secret.rs
 
 RUN apk add git caddy musl-dev
 
@@ -7,8 +7,8 @@ RUN apk add git caddy musl-dev
 WORKDIR /
 RUN git clone -b dummy_secret https://github.com/j3sb/art-of-rally-leaderboard-utils.git
 WORKDIR /art-of-rally-leaderboard-utils
-RUN cargo run --release
+# so the binary is built when running for the first time
+RUN cargo run --release 
 
 # caddy
-WORKDIR /
-ENTRYPOINT caddy file-server --listen :2015 --root /art-of-rally-leaderboard-utils/public
+ENTRYPOINT git clone && cargo run --release && caddy file-server --listen :2015 --root /art-of-rally-leaderboard-utils/public
