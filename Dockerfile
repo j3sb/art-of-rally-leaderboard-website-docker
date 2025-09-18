@@ -1,4 +1,5 @@
 FROM rust:alpine
+# mount secret.rs into /art-of-rally-leaderboard-utils/src/
 
 RUN apk add git caddy musl-dev
 
