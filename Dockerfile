@@ -1,6 +1,6 @@
 FROM rust:alpine
 
-RUN apk add git caddy musl-dev libc-dev make
+RUN apk add git caddy musl-dev
 
 # leaderboard
 WORKDIR /
