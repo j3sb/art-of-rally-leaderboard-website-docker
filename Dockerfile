@@ -7,8 +7,8 @@ RUN apk add git caddy musl-dev
 WORKDIR /
 RUN git clone -b dummy_secret https://github.com/j3sb/art-of-rally-leaderboard-utils.git
 WORKDIR /art-of-rally-leaderboard-utils
-# so the binary is built when running for the first time
-RUN cargo run --release
+# the binary can't be built yet bc the secret file is mounted as runtime and not buildtime (also weird bug when trying to rebuild bc cargo thinks the secret file didn't change)
+RUN cargo fetch
 # so pulling doesn't override secrets.rs
 RUN git update-index --assume-unchanged src/secret.rs
 
