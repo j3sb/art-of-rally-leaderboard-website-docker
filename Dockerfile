@@ -1,8 +1,6 @@
 FROM rust:alpine
 # mount secret.rs into /art-of-rally-leaderboard-utils/src/secret.rs
 
-ENV DOMAIN="localhost"
-
 RUN apk add git caddy musl-dev supercronic --no-cache
 
 # leaderboard
@@ -20,4 +18,4 @@ RUN touch /var/log/cron.log
 
 
 # caddy
-ENTRYPOINT echo "server will be started to have https on ${DOMAIN}!" && supercronic /cronjob & git pull && cargo run --release && caddy file-server --listen :2015 --root /art-of-rally-leaderboard-utils/public --domain ${DOMAIN}
+ENTRYPOINT supercronic /cronjob & git pull && cargo run --release && caddy file-server --listen :2015 --root /art-of-rally-leaderboard-utils/public
