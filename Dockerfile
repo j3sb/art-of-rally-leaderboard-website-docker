@@ -16,4 +16,4 @@ RUN touch /var/log/cron.log
 
 
 # caddy
-ENTRYPOINT supercronic /cronjob && cargo run --release && caddy file-server --listen :2015 --root /art-of-rally-leaderboard-utils/public
+ENTRYPOINT supercronic /cronjob & cargo run --release && caddy file-server --listen :2015 --root /art-of-rally-leaderboard-utils/public
